@@ -1,3 +1,5 @@
+import { router } from "expo-router";
+import { useState } from "react";
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -8,13 +10,12 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { router } from "expo-router";
-import { useState } from "react";
 
-import { gerarPersonagem } from "../services/characterService";
 import { theme } from "../constants/theme";
+import { gerarPersonagem } from "../services/characterService";
 import { styles } from "../styles/create-character.styles";
 
+// Opções disponíveis para o usuário durante a criação do personagem.
 const RACAS = [
   "Humano",
   "Elfo",
@@ -62,13 +63,19 @@ export default function CriarPersonagem() {
   const [carregando, setCarregando] = useState(false);
 
   async function handleGerarPersonagem() {
+    // Impede a geração enquanto os campos obrigatórios não forem preenchidos
+    // ou enquanto outra geração estiver em andamento.
     if (!raca || !classe || !estilo || carregando) {
       return;
     }
 
     try {
+      // Ativa o estado de carregamento para informar o usuário
+      // que o personagem está sendo criado pela IA.
       setCarregando(true);
 
+      // Envia as escolhas do usuário para o serviço responsável
+      // pela comunicação com a API Gemini.
       const personagem = await gerarPersonagem({
         raca,
         classe,
@@ -76,6 +83,7 @@ export default function CriarPersonagem() {
         ideia,
       });
 
+      // Após a geração, envia o personagem para a tela de resultado.
       router.push({
         pathname: "/personagem",
         params: {
@@ -83,8 +91,12 @@ export default function CriarPersonagem() {
         },
       });
     } catch (error) {
+      // Exibe o erro no console para facilitar a identificação
+      // de problemas durante o desenvolvimento.
       console.error("Erro ao gerar personagem:", error);
     } finally {
+      // Encerra o estado de carregamento independentemente
+      // de a requisição ter funcionado ou apresentado erro.
       setCarregando(false);
     }
   }

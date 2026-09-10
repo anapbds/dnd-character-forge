@@ -5,6 +5,10 @@ import { styles } from "../styles/character.styles";
 import { Character } from "../types/Character";
 
 export default function Personagem() {
+  /*
+  * Recupera o personagem enviado pela tela de criação
+  * através dos parâmetros de navegação.
+  */
   const { personagem } = useLocalSearchParams<{
     personagem: string;
   }>();
@@ -12,6 +16,7 @@ export default function Personagem() {
   let character: Character;
 
   try {
+    // Converte o JSON recebido pela navegação novamente para um objeto.
     character = JSON.parse(personagem);
   } catch {
     return (

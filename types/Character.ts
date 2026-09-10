@@ -1,3 +1,4 @@
+// Dados enviados pelo usuário para gerar o personagem.
 export interface CharacterRequest {
   raca: string;
   classe: string;
@@ -5,6 +6,7 @@ export interface CharacterRequest {
   ideia?: string;
 }
 
+// Estrutura do personagem gerado pela IA.
 export interface Character {
   nome: string;
   raca: string;
